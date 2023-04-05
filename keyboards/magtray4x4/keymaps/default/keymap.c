@@ -77,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [2] = LAYOUT_ortho_5x4(
         LT(0, KC_NO),
-        KC_7,   KC_8,   KC_9,   KC_PPLS,
+        KC_6,   KC_8,   KC_9,   KC_PPLS,
         KC_4,   KC_5,   KC_6,   KC_PERC,
         KC_1,   KC_2,   KC_3,   KC_EQL,
         KC_0,   KC_00,  KC_DOT, KC_PENT
@@ -98,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [3] = LAYOUT_ortho_5x4(
         LT(0, KC_NO),
-        KC_7,   KC_8,   KC_9,   KC_PPLS,
+        KC_5,   KC_8,   KC_9,   KC_PPLS,
         KC_4,   KC_5,   KC_6,   KC_PERC,
         KC_1,   KC_2,   KC_3,   KC_EQL,
         KC_0,   KC_00,  KC_DOT, KC_PENT
@@ -112,18 +112,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_0);
                 return false;
         case LT(0, KC_NO):
+            // on tap
             if (record->tap.count && record->event.pressed) {
                 layer_move(++current_layer % 4);
             }
 #ifdef OLED_ENABLE
+            // on hold
             else if (record->event.pressed) {
-                ++current_display_mode % 3;
-                switch(current_display_mode) {
+                switch(++current_display_mode % 3) {
                     case 0: // clock
                         // call the default function for oled here. the one that is initialized
+                        tap_code(KC_0);
+                        break;
                     case 1: // layers
-
+                        tap_code(KC_1);
+                        break;
                     case 2: // monkey
+                        tap_code(KC_2);
+                        break;
                 }
             }
 #endif
@@ -158,8 +164,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #ifdef OLED_ENABLE
 
-bool oled_task_user(void) {
-    static const char big1 [] PROGMEM {
+bool oled_task_user() {
+    static const char big1 [] PROGMEM = {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0xf0, 0xf0, 0xf0, 0xf8, 0xf8, 
         0xf8, 0xf8, 0xfc, 0xfc, 0xfc, 0xfc, 0xfc, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -192,9 +198,9 @@ bool oled_task_user(void) {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-    }
+    };
     
-    oled_write_raw_p(big1, sizeof(big1));
+    oled_write_raw_P(big1, sizeof(big1));
 
     return false;
 }
