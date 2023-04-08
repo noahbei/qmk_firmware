@@ -128,13 +128,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 switch(current_display_mode) {
                     case 0: // clock
                         // call the default function for oled here. the one that is initialized
-                        tap_code(KC_0);
+                        // for testing -> tap_code(KC_0);
                         break;
                     case 1: // layers
-                        tap_code(KC_1);
+                        // for testing -> tap_code(KC_1);
                         break;
                     case 2: // monkey
-                        tap_code(KC_2);
+                        // for testing -> tap_code(KC_2);
                         break;
                 }
             }
@@ -681,8 +681,7 @@ static void render_animation(void) {
     }
 }
 
-bool oled_task_user() {
-    
+static void render_layers(void) {
     static const char big1 [] PROGMEM = {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0xf0, 0xf0, 0xf0, 0xf8, 0xf8, 
         0xf8, 0xf8, 0xfc, 0xfc, 0xfc, 0xfc, 0xfc, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -822,31 +821,34 @@ bool oled_task_user() {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3f, 
         0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     };
-    
+    //oled_set_cursor(0, 1);
+    switch(get_highest_layer(layer_state)) {
+        case 0:
+            //oled_write("first layer", false);
+            oled_write_raw_P(big1, sizeof(big1));
+            break;
+        case 1:
+            //oled_write("second layer", false);
+            oled_write_raw_P(big2, sizeof(big2));
+            break;
+        case 2:
+            //oled_write("third layer", false);
+            oled_write_raw_P(big3, sizeof(big3));
+            break;
+        case 3:
+            //oled_write("fourth layer", false);
+            oled_write_raw_P(big4, sizeof(big4));
+            break;
+    }
+}
+
+bool oled_task_user() {
     switch(current_display_mode) {
         case 0:
             render_animation();
             break;
         case 1:
-            //oled_set_cursor(0, 1);
-            switch(get_highest_layer(layer_state)) {
-                case 0:
-                    //oled_write("first layer", false);
-                    oled_write_raw_P(big1, sizeof(big1));
-                    break;
-                case 1:
-                    //oled_write("second layer", false);
-                    oled_write_raw_P(big2, sizeof(big2));
-                    break;
-                case 2:
-                    //oled_write("third layer", false);
-                    oled_write_raw_P(big3, sizeof(big3));
-                    break;
-                case 3:
-                    //oled_write("fourth layer", false);
-                    oled_write_raw_P(big4, sizeof(big4));
-                    break;
-            }
+            render_layers();
             break;
         case 2:
             break;
