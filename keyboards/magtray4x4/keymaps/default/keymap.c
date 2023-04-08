@@ -8,8 +8,8 @@ bool oled_task_user(void);
 #endif
 
 //make custom cycle keycode and function in process_user_record
-int current_layer = 0;
-int current_display_mode = 0;
+uint8_t current_layer = 0;
+uint8_t current_display_mode = 0;
 
 enum layers {
     NUM_P,
@@ -39,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [0] = LAYOUT_ortho_5x4(
         LT(0, KC_NO),
-        KC_7,   KC_8,   KC_9,   KC_PPLS,
+        KC_1,   KC_8,   KC_9,   KC_PPLS,
         KC_4,   KC_5,   KC_6,   KC_PERC,
         KC_1,   KC_2,   KC_3,   KC_EQL,
         KC_0,   KC_00,  KC_DOT, KC_PENT
@@ -59,8 +59,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * └───┴───┴───┘───┘
      */
     [1] = LAYOUT_ortho_5x4(
-        LT(0, KC_NO),
-        KC_HOME, KC_UP,   KC_PGUP, KC_3,
+        LT(0, KC_NO), //KC_HOME
+        KC_2,    KC_UP,   KC_PGUP, KC_3,
         KC_LEFT, XXXXXXX, KC_RGHT, KC_2,
         KC_END,  KC_DOWN, KC_PGDN, KC_1,
         KC_INS,  KC_SPC,  KC_DEL,  KC_PENT
@@ -81,7 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [2] = LAYOUT_ortho_5x4(
         LT(0, KC_NO),
-        KC_6,   KC_8,   KC_9,   KC_PPLS,
+        KC_3,   KC_8,   KC_9,   KC_PPLS,
         KC_4,   KC_5,   KC_6,   KC_PERC,
         KC_1,   KC_2,   KC_3,   KC_EQL,
         KC_0,   KC_00,  KC_DOT, KC_PENT
@@ -102,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [3] = LAYOUT_ortho_5x4(
         LT(0, KC_NO),
-        KC_5,   KC_8,   KC_9,   KC_PPLS,
+        KC_4,   KC_8,   KC_9,   KC_PPLS,
         KC_4,   KC_5,   KC_6,   KC_PERC,
         KC_1,   KC_2,   KC_3,   KC_EQL,
         KC_0,   KC_00,  KC_DOT, KC_PENT
@@ -118,12 +118,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case LT(0, KC_NO):
             // on tap
             if (record->tap.count && record->event.pressed) {
-                layer_move(++current_layer % 4);
+                current_layer = (current_layer + 1) % 4;
+                layer_move(current_layer);
             }
 #ifdef OLED_ENABLE
             // on hold
             else if (record->event.pressed) {
-                switch(++current_display_mode % 3) {
+                current_display_mode = (current_display_mode + 1) % 3;
+                switch(current_display_mode) {
                     case 0: // clock
                         // call the default function for oled here. the one that is initialized
                         tap_code(KC_0);
@@ -163,7 +165,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             
             break;
     }
-  return state;
+    return state;
 }
 
 #ifdef OLED_ENABLE
@@ -314,24 +316,31 @@ bool oled_task_user() {
         0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     };
     
-    
-    //oled_set_cursor(0, 1);
-    switch(get_highest_layer(layer_state)) { // switch current_layer didin't work
+    switch(current_display_mode) {
         case 0:
-            //oled_write("first layer", false);
-            oled_write_raw_P(big1, sizeof(big1));
             break;
         case 1:
-            //oled_write("second layer", false);
-            oled_write_raw_P(big2, sizeof(big2));
+            //oled_set_cursor(0, 1);
+            switch(get_highest_layer(layer_state)) {
+                case 0:
+                    //oled_write("first layer", false);
+                    oled_write_raw_P(big1, sizeof(big1));
+                    break;
+                case 1:
+                    //oled_write("second layer", false);
+                    oled_write_raw_P(big2, sizeof(big2));
+                    break;
+                case 2:
+                    //oled_write("third layer", false);
+                    oled_write_raw_P(big3, sizeof(big3));
+                    break;
+                case 3:
+                    //oled_write("fourth layer", false);
+                    oled_write_raw_P(big4, sizeof(big4));
+                    break;
+            }
             break;
         case 2:
-            //oled_write("third layer", false);
-            oled_write_raw_P(big3, sizeof(big3));
-            break;
-        case 3:
-            //oled_write("fourth layer", false);
-            oled_write_raw_P(big4, sizeof(big4));
             break;
     }
     return false;
