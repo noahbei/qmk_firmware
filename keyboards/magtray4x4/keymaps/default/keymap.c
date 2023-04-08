@@ -822,7 +822,7 @@ static void render_layers(void) {
         0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     };
     //oled_set_cursor(0, 1);
-    switch(get_highest_layer(layer_state)) {
+    switch(current_layer) {
         case 0:
             //oled_write("first layer", false);
             oled_write_raw_P(big1, sizeof(big1));
