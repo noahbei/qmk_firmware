@@ -3,6 +3,7 @@
 
 #pragma once
 
+#define OLED_TIMEOUT 180000
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.
