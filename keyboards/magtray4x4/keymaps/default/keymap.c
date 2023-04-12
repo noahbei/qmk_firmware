@@ -4,6 +4,8 @@
 #include QMK_KEYBOARD_H
 
 #ifdef OLED_ENABLE
+#include <stdio.h>
+#include <time.h>
 bool oled_task_user(void);
 #endif
 
@@ -842,6 +844,16 @@ static void render_layers(void) {
     }
 }
 
+static void render_clock(void) {
+    oled_set_cursor(0,1);
+    //time_t now = time(NULL);
+    //struct tm* timeinfo = localtime(&now);
+    char text[20];  // buffer to hold formatted text
+    //snprintf(text, sizeof(text), "%02d:%02d:%02d %s\n", timeinfo->tm_hour % 12, timeinfo->tm_min, timeinfo->tm_sec, timeinfo->tm_hour >= 12 ? "PM" : "AM");
+    snprintf(text, sizeof(text), "%d %d\n", oled_max_chars(), oled_max_lines());
+    oled_write(text, false);
+}
+
 bool oled_task_user() {
     switch(current_display_mode) {
         case 0:
@@ -851,6 +863,7 @@ bool oled_task_user() {
             render_layers();
             break;
         case 2:
+            render_clock();
             break;
     }
     return false;
