@@ -4,8 +4,8 @@
 #pragma once
 
 #define OLED_TIMEOUT 180000
-#define OLED_FONT_WIDTH 11
-#define OLED_FONT_HEIGHT 8
+//#define OLED_FONT_WIDTH 11
+//#define OLED_FONT_HEIGHT 8
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.
