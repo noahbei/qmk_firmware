@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+#include <stdio.h>
+#include <ch.h>
+#include <hal.h>
+//#include "timer.h"
 
 #ifdef OLED_ENABLE
 static void flash_current_layer(void);
@@ -70,7 +74,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef OLED_ENABLE
             // on hold
             else if (record->event.pressed) {
-                current_display_mode = (current_display_mode + 1) % 3;
+                current_display_mode = (current_display_mode + 1) % 4;
             }
 #endif
             return false;
@@ -1323,6 +1327,27 @@ static void render_button_pressed(void) {
         oled_write_raw_P(not_pressed, sizeof(not_pressed));
 }
 
+RTCDateTime last_timespec;
+uint16_t last_minute;
+
+void matrix_scan_kb(void) {
+    rtcGetTime(&RTCD1, &last_timespec);
+    uint16_t minutes_since_midnight = last_timespec.millisecond / 1000 / 60;
+
+    if (minutes_since_midnight != last_minute)
+        last_minute = minutes_since_midnight;
+}
+
+static void render_clock(void) {
+    int8_t hour = last_minute / 60;
+    int16_t minute = last_minute % 60;
+
+    char time_display[5] = "";
+
+    sprintf(time_display, "%02d:%02d", hour, minute);
+    oled_write(time_display, false);
+}
+
 static void flash_current_layer(void) {
     // will flash for 500 ms
     if (timer_elapsed(flash_timer) > 500)
@@ -1495,6 +1520,9 @@ bool oled_task_user() {
             break;
         case 2:
             render_button_pressed();
+            break;
+        case 3:
+            render_clock();
             break;
     }
     return false;
