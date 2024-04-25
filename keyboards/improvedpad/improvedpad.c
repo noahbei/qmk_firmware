@@ -3,6 +3,8 @@
 
 #include QMK_KEYBOARD_H
 #include "improvedpad.h"
+#include "qp.h"
+#include "gfx/logo.qgf.h"
 
 void board_init(void) {
   SYSCFG->CFGR1 |= SYSCFG_CFGR1_I2C1_DMA_RMP;
@@ -53,5 +55,23 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
     layer_changed = true;
     
     return layer_state_set_user(state);
+}
+#endif
+
+#ifdef QUANTUM_PAINTER_ENABLE
+
+painter_device_t lcd;
+void keyboard_post_init_kb(void) {
+    wait_ms(LCD_WAIT_TIME);
+    lcd = qp_st7735_make_spi_device(LCD_HEIGHT, LCD_WIDTH, LCD_CS_PIN, LCD_DC_PIN, LCD_RST_PIN, LCD_SPI_DIVISOR, 0);
+    qp_init(lcd, LCD_ROTATION);
+    qp_set_viewport_offsets(lcd, LCD_OFFSET_X, LCD_OFFSET_Y);
+    qp_power(lcd, true);
+
+
+    painter_image_handle_t logo_image = qp_load_image_mem(gfx_logo);
+    qp_drawimage(lcd, 0, 0, logo_image);
+
+    keyboard_post_init_user();
 }
 #endif

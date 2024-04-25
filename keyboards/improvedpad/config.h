@@ -3,16 +3,31 @@
 
 #pragma once
 
-#define I2C_DRIVER I2CD1
-#define I2C1_SCL_PAL_MODE 1
-#define I2C1_SDA_PAL_MODE 1
-#define I2C1_TIMINGR_PRESC 0x00U
-#define I2C1_TIMINGR_SCLDEL 0x03U
-#define I2C1_TIMINGR_SDADEL 0x01U
-#define I2C1_TIMINGR_SCLH 0x03U
-#define I2C1_TIMINGR_SCLL 0x09U
+#pragma once
 
-#define OLED_TIMEOUT 300000
+// SPI pins
+// #define SPI_DRIVER SPID1
+#define SPI_SCK_PIN B10
+#define SPI_MOSI_PIN C3
+#define SPI_MISO_PIN C2 // Unused
+
+// LCD Configuration
+#define LCD_RST_PIN B21
+#define LCD_CS_PIN B8
+#define LCD_DC_PIN B9
+#define LCD_BLK_PIN B7
+#define LCD_SPI_DIVISOR 4
+#define LCD_WAIT_TIME 150
+#define LCD_WIDTH 128
+#define LCD_HEIGHT 128
+#define LCD_ROTATION QP_ROTATION_0
+#define LCD_OFFSET_X 1
+#define LCD_OFFSET_Y 26
+
+// Painter Configuration
+#define QUANTUM_PAINTER_SUPPORTS_NATIVE_COLORS true
+
+// Encoder Configuration
 #define ENCODERS_PAD_A { B14, B5 }
 #define ENCODERS_PAD_B { B13, B4 }
 #define ENCODER_RESOLUTION 4

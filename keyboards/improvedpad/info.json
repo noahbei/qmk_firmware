@@ -10,8 +10,7 @@
         "console": false,
         "extrakey": true,
         "mousekey": true,
-        "nkro": true,
-        "oled": true
+        "nkro": true
     },
     "matrix_pins": {
         "cols": ["B2", "B1", "B0", "C5", "B12", "B3"],
