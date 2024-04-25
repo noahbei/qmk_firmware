@@ -15,7 +15,6 @@
 #define LCD_RST_PIN A2
 #define LCD_CS_PIN A4
 #define LCD_DC_PIN A1
-#define LCD_BLK_PIN B7
 #define LCD_SPI_DIVISOR 4
 #define LCD_WAIT_TIME 150
 #define LCD_WIDTH 128
