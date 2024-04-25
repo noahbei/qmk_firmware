@@ -7,14 +7,14 @@
 
 // SPI pins
 // #define SPI_DRIVER SPID1
-#define SPI_SCK_PIN B10
-#define SPI_MOSI_PIN C3
-#define SPI_MISO_PIN C2 // Unused
+#define SPI_SCK_PIN A5
+#define SPI_MOSI_PIN A7
+#define SPI_MISO_PIN A6 // Unused
 
 // LCD Configuration
-#define LCD_RST_PIN B21
-#define LCD_CS_PIN B8
-#define LCD_DC_PIN B9
+#define LCD_RST_PIN A2
+#define LCD_CS_PIN A4
+#define LCD_DC_PIN A1
 #define LCD_BLK_PIN B7
 #define LCD_SPI_DIVISOR 4
 #define LCD_WAIT_TIME 150
