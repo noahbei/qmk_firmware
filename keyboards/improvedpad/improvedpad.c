@@ -10,6 +10,9 @@ void board_init(void) {
   SYSCFG->CFGR1 |= SYSCFG_CFGR1_I2C1_DMA_RMP;
 }
 
+
+
+
 const uint8_t max_layer = 3;
 uint8_t current_display_mode = 0;
 
