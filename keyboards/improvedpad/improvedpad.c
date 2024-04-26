@@ -68,7 +68,7 @@ void keyboard_post_init_kb(void) {
     qp_set_viewport_offsets(lcd, LCD_OFFSET_X, LCD_OFFSET_Y);
     qp_power(lcd, true);
 
-
+    qp_rect(lcd, 0, 0, LCD_WIDTH, LCD_HEIGHT, 0, 0, 0, true);
     painter_image_handle_t logo_image = qp_load_image_mem(gfx_logo);
     qp_drawimage(lcd, 0, 0, logo_image);
 

@@ -6,10 +6,13 @@
 #pragma once
 
 // SPI pins
-// #define SPI_DRIVER SPID1
+#define SPI_DRIVER SPID1
 #define SPI_SCK_PIN A5
 #define SPI_MOSI_PIN A7
-#define SPI_MISO_PIN A6 // Unused
+#define SPI_MISO_PIN NO_PIN // Unused
+#define SPI_SCK_PAL_MODE 0
+#define SPI_MOSI_PAL_MODE 0
+// #define SPI_MISO_PAL_MODE 0
 
 // LCD Configuration
 #define LCD_RST_PIN A2
@@ -19,9 +22,9 @@
 #define LCD_WAIT_TIME 150
 #define LCD_WIDTH 128
 #define LCD_HEIGHT 128
-#define LCD_ROTATION QP_ROTATION_0
+#define LCD_ROTATION QP_ROTATION_180
 #define LCD_OFFSET_X 1
-#define LCD_OFFSET_Y 26
+#define LCD_OFFSET_Y 2
 
 // Painter Configuration
 #define QUANTUM_PAINTER_SUPPORTS_NATIVE_COLORS true
