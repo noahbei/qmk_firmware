@@ -28,6 +28,7 @@
 
 // Painter Configuration
 #define QUANTUM_PAINTER_SUPPORTS_NATIVE_COLORS true
+#define QUANTUM_PAINTER_DISPLAY_TIMEOUT 0
 
 // Encoder Configuration
 #define ENCODERS_PAD_A { B14, B5 }
@@ -36,3 +37,5 @@
 #define ENCODER_MAP_KEY_DELAY 10
 #define ENCODER_DEFAULT_POS 0x3
 #define ENCODER_DIRECTION_FLIP
+
+#define DYNAMIC_KEYMAP_MACRO_COUNT 64
